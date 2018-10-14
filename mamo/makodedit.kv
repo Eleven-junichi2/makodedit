@@ -1,0 +1,251 @@
+#:kivy 1.9.4
+#:import get_color_from_hex kivy.utils.get_color_from_hex
+#:set APP_NAME "Makodedit"
+
+<TitleTopBar@Label>:
+    canvas.before:
+        Color:
+            rgba: get_color_from_hex("#2E2E2EFF")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    size: self.parent.width, 70
+    size_hint: None, None
+    font_name: "NotoSansCJKjp-Light"
+    font_size: 36
+    text: APP_NAME
+
+
+<EditMemo>:
+    canvas.before:
+        Color:
+            rgba: get_color_from_hex("#E8E8E8FF")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        size: self.parent.size
+        orientation: "vertical"
+        ActionBar:
+            height: 70
+            size_hint_y: None
+            ActionView:
+                use_separator: True
+                ActionPrevious:
+                    title: APP_NAME
+                    app_icon: ""
+                    on_press: root.manager.current = "main"
+        AnchorLayout:
+            anchor_x: "center"
+            padding: 20.5, 20, 20.5, 20
+            CodeInput:
+                background_color: get_color_from_hex("#FFFFFF")
+        BoxLayout:
+            orientation: "horizontal"
+            height: 50
+            size_hint_y: None
+            AnchorLayout:
+                anchor_x: "right"
+                Button:
+                    size: 50, self.parent.height
+                    size_hint: None, None
+                    background_normal: "images/mini-save-memo_btn.png"
+                    background_down: "images/mini-save-memo_btn_pressed.png"
+                    font_name: "NotoSansCJKjp-Light"
+                    font_size: 14
+                    on_press: root.manager.current = "main"
+                Widget:
+                    width: 20
+                    size_hint: None, None
+            AnchorLayout:
+                anchor_x: "left"
+                Button:
+                    size: 50, self.parent.height
+                    size_hint: None, None
+                    background_normal: "images/mini-open-memo_btn.png"
+                    background_down: "images/mini-open-memo_btn_pressed.png"
+                    font_name: "NotoSansCJKjp-Light"
+                    font_size: 14
+        AnchorLayout:
+            anchor_x: "center"
+            height: 135
+            width: 135
+            size_hint: None, None
+            Widget:
+                size: self.parent.width, self.parent.height
+                size_hint: None, None
+
+
+
+<Tutorial>:
+    BoxLayout:
+        size: self.parent.size
+        orientation: "vertical"
+        ActionBar:
+            height: 70
+            size_hint_y: None
+            ActionView:
+                use_separator: True
+                ActionPrevious:
+                    title: APP_NAME
+                    app_icon: ""
+                    on_press: root.manager.current = "main"
+        Carousel:
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex("#E8E8E8FF")
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "Makodeditはシンプルなメモアプリです。"
+                Image:
+                    source: "images/phone_in_hand.png"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    font_size: 12
+                    color: get_color_from_hex("#009688")
+                    text: "続けて見るには左右どちらかにスライドしてください"
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "コードを見やすくしてくれる\nシンタックスハイライト機能があるので、"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "Pythonのスクリプトエディタとしても使えます。"
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "メモを書いたり開くには"
+                Image:
+                    source: "images/manage-memo_btn.png"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "をタップします。"
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "新しく書くには"
+                Image:
+                    source: "images/create-memo_btn.png"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "をタップします。"
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "今まで書いたメモを開くには"
+                Image:
+                    source: "images/open-memo_btn.png"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "をタップします。"
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "書いたメモを保存するには"
+                Image:
+                    source: "images/save-memo_btn.png"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "をタップします。"
+
+
+<ManageMemoMenu>:
+    canvas.before:
+        Color:
+            rgba: get_color_from_hex("#E8E8E8FF")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        size: self.parent.size
+        orientation: "vertical"
+        ActionBar:
+            ActionView:
+                use_separator: True
+                ActionPrevious:
+                    title: APP_NAME
+                    app_icon: ""
+                    on_press: root.manager.current = "main"
+        BoxLayout:
+            orientaion: "horizontal"
+            AnchorLayout:
+                anchor_x: "right"
+                Button:
+                    size: 100, 100
+                    size_hint: None, None
+                    background_normal: "images/create-memo_btn.png"
+                    background_down: "images/create-memo_btn_pressed.png"
+                    font_name: "NotoSansCJKjp-Light"
+                    font_size: 14
+                    on_press: root.manager.current = "edit_memo"
+            Widget:
+                width: 20
+                size_hint: None, None
+            AnchorLayout:
+                anchor_x: "left"
+                Button:
+                    size: 100, 100
+                    size_hint: None, None
+                    background_normal: "images/open-memo_btn.png"
+                    background_down: "images/open-memo_btn_pressed.png"
+                    font_name: "NotoSansCJKjp-Light"
+                    font_size: 14
+
+
+<MainMenu>:
+    canvas.before:
+        Color:
+            rgba: get_color_from_hex("#E8E8E8FF")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        size: self.parent.size
+        orientation: "vertical"
+        TitleTopBar:
+        BoxLayout:
+            orientaion: "horizontal"
+            AnchorLayout:
+                anchor_x: "right"
+                Button:
+                    size: 100, 100
+                    size_hint: None, None
+                    background_normal: "images/help_btn.png"
+                    background_down: "images/help_btn_pressed.png"
+                    font_name: "NotoSansCJKjp-Light"
+                    font_size: 14
+                    on_press: root.manager.current = 'tutorial'
+            Widget:
+                width: 20
+                size_hint: None, None
+            AnchorLayout:
+                anchor_x: "left"
+                Button:
+                    size: 100, 100
+                    size_hint: None, None
+                    background_normal: "images/manage-memo_btn.png"
+                    background_down: "images/manage-memo_btn_pressed.png"
+                    font_name: "NotoSansCJKjp-Light"
+                    font_size: 14
+                    on_press: root.manager.current = 'manage_memo'
