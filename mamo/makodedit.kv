@@ -16,7 +16,34 @@
     text: APP_NAME
 
 
+<MakodeditFileBrowser>:
+    BoxLayout:
+        orientation: "vertical"
+        FileChooserIconView:
+            path: "./"
+        BoxLayout:
+            orientation: "horizontal"
+            height: 100
+            size_hint_y: None
+            Button:
+                size: 100, self.parent.height
+                size_hint: None, None
+                background_normal: "images/open-memo_btn.png"
+                background_down: "images/open-memo_btn_pressed.png"
+                on_release: 
+            Widget:
+                width: 5
+                size_hint_x: None
+            Button:
+                size: 100, self.parent.height
+                size_hint: None, None
+                background_normal: "images/cancel_btn.png"
+                background_down: "images/cancel_btn_pressed.png"
+                on_release: root.manager.current = root.manager.previous()
+
+
 <EditMemo>:
+    code_input: code_input
     canvas.before:
         Color:
             rgba: get_color_from_hex("#E8E8E8FF")
@@ -30,15 +57,34 @@
             height: 70
             size_hint_y: None
             ActionView:
-                use_separator: True
                 ActionPrevious:
                     title: APP_NAME
                     app_icon: ""
                     on_press: root.manager.current = "main"
+                ActionGroup:
+                    font_name: "NotoSansCJKjp-Light"
+                    text: "シンタックスハイライト"
+                    mode: 'spinner'
+                    ActionButton:
+                        text: "Default"
+                        on_release: code_input.change_style()
+                    ActionButton:
+                        text: "Emacs"
+                        on_release: code_input.change_style("emacs")
+                    ActionButton:
+                        text: "Friendly"
+                        on_release: code_input.change_style("friendly")
+                    ActionButton:
+                        text: "Colorful"
+                        on_release: code_input.change_style("colorful")
         AnchorLayout:
             anchor_x: "center"
             padding: 20.5, 20, 20.5, 20
-            CodeInput:
+            MakodeditCodeInput:
+                id: code_input
+                font_name: "NotoSansMonoCJKjp-Regular"
+                auto_indent: True
+                font_size: 12
                 background_color: get_color_from_hex("#FFFFFF")
         BoxLayout:
             orientation: "horizontal"
@@ -53,7 +99,6 @@
                     background_down: "images/mini-save-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
-                    on_press: root.manager.current = "main"
                 Widget:
                     width: 20
                     size_hint: None, None
@@ -66,6 +111,7 @@
                     background_down: "images/mini-open-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
+                    on_release: root.manager.current = "file_browser"
         AnchorLayout:
             anchor_x: "center"
             height: 135
@@ -75,6 +121,35 @@
                 size: self.parent.width, self.parent.height
                 size_hint: None, None
 
+
+# <LoadDialog>:
+#     text_input: root.code_input
+#     BoxLayout:
+#         size: root.size
+#         pos: self.parent.pos
+#         orientation: "vertical"
+#         FileChooserIconView:
+#             id: file_chooser
+#             path: "./"
+#         BoxLayout:
+#             orientation: "horizontal"
+#             height: 100
+#             size_hint_y: None
+#             Button:
+#                 size: 100, self.parent.height
+#                 size_hint: None, None
+#                 background_normal: "images/open-memo_btn.png"
+#                 background_down: "images/open-memo_btn_pressed.png"
+#                 # on_release:
+#             Widget:
+#                 width: 5
+#                 size_hint_x: None
+#             Button:
+#                 size: 100, self.parent.height
+#                 size_hint: None, None
+#                 background_normal: "images/cancel_btn.png"
+#                 background_down: "images/cancel_btn_pressed.png"
+#                 on_release: root.cancel()
 
 
 <Tutorial>:
@@ -125,6 +200,16 @@
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
+                    text: "Kv言語の知識があれば、\n.kvファイルの内容をカスタマイズして、"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "見た目や機能を変えることができます。"
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
                     text: "メモを書いたり開くには"
                 Image:
                     source: "images/manage-memo_btn.png"
@@ -170,6 +255,11 @@
                     text: "をタップします。"
 
 
+# <LoadDialog>:
+#     # content:
+#     #     FileChooserIconView:
+#     #         id: file_chooser
+
 <ManageMemoMenu>:
     canvas.before:
         Color:
@@ -198,7 +288,7 @@
                     background_down: "images/create-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
-                    on_press: root.manager.current = "edit_memo"
+                    on_release: root.manager.current = "edit_memo"
             Widget:
                 width: 20
                 size_hint: None, None
@@ -211,6 +301,7 @@
                     background_down: "images/open-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
+                    on_release: 
 
 
 <MainMenu>:
@@ -235,7 +326,7 @@
                     background_down: "images/help_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
-                    on_press: root.manager.current = 'tutorial'
+                    on_release: root.manager.current = 'tutorial'
             Widget:
                 width: 20
                 size_hint: None, None
@@ -248,4 +339,4 @@
                     background_down: "images/manage-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
-                    on_press: root.manager.current = 'manage_memo'
+                    on_release: root.manager.current = 'manage_memo'
