@@ -16,34 +16,28 @@
     text: APP_NAME
 
 
-<MakodeditFileBrowser>:
+<DialogSavedLayout>:
     BoxLayout:
+        size: self.parent.size
         orientation: "vertical"
-        FileChooserIconView:
-            path: "./"
-        BoxLayout:
-            orientation: "horizontal"
-            height: 100
-            size_hint_y: None
-            Button:
-                size: 100, self.parent.height
-                size_hint: None, None
-                background_normal: "images/open-memo_btn.png"
-                background_down: "images/open-memo_btn_pressed.png"
-                on_release: 
-            Widget:
-                width: 5
-                size_hint_x: None
-            Button:
-                size: 100, self.parent.height
-                size_hint: None, None
-                background_normal: "images/cancel_btn.png"
-                background_down: "images/cancel_btn_pressed.png"
-                on_release: root.manager.current = root.manager.previous()
+        Label:
+            text: "保存しました。"
+            font_size: 24
+            font_name: "NotoSansCJKjp-Light"
+        Label:
+            text: "タイトル: {}".format(root.saved_file_name)
+            font_size: 24
+            font_name: "NotoSansCJKjp-Light"
+        Button:
+            size: 100, 100
+            size_hint: None, None
+            background_normal: "images/save-memo_btn.png"
+            background_down: "images/save-memo_btn_pressed.png"
+            font_name: "NotoSansCJKjp-Light"
+            on_release: root.popup.dismiss()
 
 
 <EditMemo>:
-    code_input: code_input
     canvas.before:
         Color:
             rgba: get_color_from_hex("#E8E8E8FF")
@@ -80,12 +74,23 @@
         AnchorLayout:
             anchor_x: "center"
             padding: 20.5, 20, 20.5, 20
-            MakodeditCodeInput:
-                id: code_input
-                font_name: "NotoSansMonoCJKjp-Regular"
-                auto_indent: True
-                font_size: 12
-                background_color: get_color_from_hex("#FFFFFF")
+            BoxLayout:
+                orientation: "vertical"
+                TextInput:
+                    id: file_name_input
+                    hint_text: "Title: as the file name."
+                    height: 30
+                    font_size: 10
+                    size_hint_y: None
+                    font_name: "NotoSansCJKjp-Light"
+                    multiline: False
+                    background_color: get_color_from_hex("#FFFFFF")
+                MakodeditCodeInput:
+                    id: code_input
+                    font_name: "NotoSansMonoCJKjp-Regular"
+                    auto_indent: True
+                    font_size: 12
+                    background_color: get_color_from_hex("#FFFFFF")
         BoxLayout:
             orientation: "horizontal"
             height: 50
@@ -99,6 +104,7 @@
                     background_down: "images/mini-save-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
+                    on_release: root.save(file_name_input.text, code_input.text)
                 Widget:
                     width: 20
                     size_hint: None, None
@@ -110,8 +116,6 @@
                     background_normal: "images/mini-open-memo_btn.png"
                     background_down: "images/mini-open-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
-                    font_size: 14
-                    on_release: root.manager.current = "file_browser"
         AnchorLayout:
             anchor_x: "center"
             height: 135
@@ -120,36 +124,6 @@
             Widget:
                 size: self.parent.width, self.parent.height
                 size_hint: None, None
-
-
-# <LoadDialog>:
-#     text_input: root.code_input
-#     BoxLayout:
-#         size: root.size
-#         pos: self.parent.pos
-#         orientation: "vertical"
-#         FileChooserIconView:
-#             id: file_chooser
-#             path: "./"
-#         BoxLayout:
-#             orientation: "horizontal"
-#             height: 100
-#             size_hint_y: None
-#             Button:
-#                 size: 100, self.parent.height
-#                 size_hint: None, None
-#                 background_normal: "images/open-memo_btn.png"
-#                 background_down: "images/open-memo_btn_pressed.png"
-#                 # on_release:
-#             Widget:
-#                 width: 5
-#                 size_hint_x: None
-#             Button:
-#                 size: 100, self.parent.height
-#                 size_hint: None, None
-#                 background_normal: "images/cancel_btn.png"
-#                 background_down: "images/cancel_btn_pressed.png"
-#                 on_release: root.cancel()
 
 
 <Tutorial>:
@@ -254,11 +228,6 @@
                     color: get_color_from_hex("#000000")
                     text: "をタップします。"
 
-
-# <LoadDialog>:
-#     # content:
-#     #     FileChooserIconView:
-#     #         id: file_chooser
 
 <ManageMemoMenu>:
     canvas.before:

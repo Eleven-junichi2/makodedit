@@ -8,7 +8,7 @@
             "name": "Python: Run App (Integrated Terminal)",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/mamo/main.py",
+            "program": "${workspaceFolder}/makodedit/main.py",
             "console": "integratedTerminal"
         },
         {
