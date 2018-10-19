@@ -1,5 +1,5 @@
 
-# Created by https://www.gitignore.io/api/python,visualstudiocode
+# Created by https://www.gitignore.io/api/python,virtualenv,visualstudiocode
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
@@ -129,6 +129,10 @@ dmypy.json
 pyvenv.cfg
 pip-selfcheck.json
 
+### VirtualEnv ###
+# Virtualenv
+# http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
+
 ### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
@@ -137,4 +141,4 @@ pip-selfcheck.json
 !.vscode/extensions.json
 
 
-# End of https://www.gitignore.io/api/python,visualstudiocode
+# End of https://www.gitignore.io/api/python,virtualenv,visualstudiocode
