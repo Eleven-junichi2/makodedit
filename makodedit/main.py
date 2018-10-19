@@ -46,49 +46,57 @@ class DialogSavedLayout(RelativeLayout):
         self.popup = popup
 
 
-class DialogLoadedLayout(RelativeLayout):
-    loaded_file_name = StringProperty(None)
+class DialogLoadLayout(RelativeLayout):
+    file_manage_user = ObjectProperty(None)
+    file_manager = ObjectProperty(None)
+    data_dir = ObjectProperty(None)
     popup = ObjectProperty(None)
 
-    def __init__(self, loaded_file_name, popup, *args, **kwargs):
+    def __init__(self, file_manage_user, file_manager, data_dir, popup, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.loaded_file_name = loaded_file_name
+        self.file_manage_user = file_manage_user
+        self.file_manager = file_manager
+        self.data_dir = data_dir
         self.popup = popup
 
 
 class DialogSaved(Popup):
     def __init__(self, saved_file_name, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.saved_file_name = saved_file_name
         self.size_hint = (0.9, 0.9)
         self.content = DialogSavedLayout(saved_file_name, self)
 
 
-class DialogLoaded(Popup):
-    def __init__(self, loaded_file_name, *args, **kwargs):
+class DialogLoad(Popup):
+    def __init__(self, file_manage_user, file_manager, data_dir,
+                 *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.loaded_file_name = loaded_file_name
+
         self.size_hint = (0.9, 0.9)
-        self.content = DialogLoadedLayout(loaded_file_name, self)
+        self.content = DialogLoadLayout(
+            file_manage_user, file_manager, data_dir, self)
 
 
 class MakodeditFileManage:
-    def __init__(self, *args, **kwargs):
+    def __init__(self, file_manage_user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         check_exist_data_dir(data_dir(DATA_DIR_NAME))
         self.data_dir_path = data_dir(DATA_DIR_NAME)
+        self.file_manage_user = file_manage_user
+        self.loaded_file_text = ""
 
     def load_file(self, file_name):
-        with open(str(self.data_dir_path / file_name), "r") as file_obj:
-            return file_obj.read()
+        file_path = self.data_dir_path / file_name
+        file_name = file_path.parts[-1]
+        with open(str(file_path), "r") as file_obj:
+            return file_obj.read(), file_name
 
     def save_file(self, file_name, text):
         file_name = str(file_name)
         text = str(text)
         if not(file_name == "" or text == ""):
             # self.data_dir_path: pathlib.Path object
-            file_name = str(self.data_dir_path / file_name)
-            with open(file_name, "w") as file_obj:
+            with open(str(self.data_dir_path / file_name), "w") as file_obj:
                 file_obj.write(text)
             return True
         else:
@@ -98,8 +106,8 @@ class MakodeditFileManage:
         popup = DialogSaved(saved_file_name)
         popup.open()
 
-    def dialog_loaded(self, loaded_file_name):
-        popup = DialogLoaded(loaded_file_name)
+    def dialog_load(self):
+        popup = DialogLoad(self.file_manage_user, self, self.data_dir_path)
         popup.open()
 
 
@@ -114,16 +122,20 @@ class MakodeditCodeInput(CodeInput):
 
 
 class EditMemo(Screen):
+    file_title = ObjectProperty(None)
     text_input = ObjectProperty(None)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.file_manage = MakodeditFileManage()
+        self.file_manage = MakodeditFileManage(self)
 
-    def save(self, file_name, text, show_dialog=True):
+    def save(self, file_name, text):
         saved = self.file_manage.save_file(file_name, text)
-        if saved and show_dialog:
+        if saved:
             self.file_manage.dialog_saved(file_name)
+
+    def load(self):
+        self.file_manage.dialog_load()
 
 
 class Tutorial(Screen):

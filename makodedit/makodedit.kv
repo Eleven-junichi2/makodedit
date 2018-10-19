@@ -37,7 +37,86 @@
             on_release: root.popup.dismiss()
 
 
+<DialogLoadLayout>:
+    BoxLayout:
+        size: self.parent.size
+        orientation: "vertical"
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex("#464646FF")
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            height: 66
+            size_hint_y: None
+            orientation: "vertical"
+            Label:
+                text: "ファイルの場所:"
+                font_size: 12
+                font_name: "NotoSansCJKjp-Light"
+            TextInput:
+                text: "{}".format(file_chooser.path)
+                font_size: 12
+                multiline: False
+                font_name: "NotoSansCJKjp-Light"
+        FileChooserListView:
+            id: file_chooser
+            path: str(root.data_dir)
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex("#464646FF")
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            padding_bottom: 10
+            height: 66
+            size_hint_y: None
+            orientation: "vertical"
+            Label:
+                text: "ファイルの名前:"
+                font_size: 12
+                font_name: "NotoSansCJKjp-Light"
+            TextInput:
+                text: "{}".format(file_chooser.selection)
+                font_size: 12
+                multiline: False
+                font_name: "NotoSansCJKjp-Light"
+        BoxLayout:
+            height: 100
+            size_hint_y: None
+            Button:
+                size: 100, self.parent.height
+                size_hint: None, None
+                background_normal: "images/cancel_btn.png"
+                background_down: "images/cancel_btn_pressed.png"
+                font_name: "NotoSansCJKjp-Light"
+                on_release: root.popup.dismiss()
+            Widget:
+                width: 10
+                size_hint_x: None
+            Button:
+                size: 100, self.parent.height
+                size_hint: None, None
+                background_normal: "images/save-memo_btn.png"
+                background_down: "images/save-memo_btn_pressed.png"
+                font_name: "NotoSansCJKjp-Light"
+                on_release:
+                    if not file_chooser.selection == []: \
+                    root.file_manager.loaded_file_text, file_name = root.file_manager.load_file(file_chooser.selection[0])
+                    else: \
+                    root.file_manager.loaded_file_text, file_name = \
+                    root.file_manage_user.text_input.text, root.file_manage_user.file_title.text
+
+                    root.file_manage_user.file_title.text = file_name
+                    root.file_manage_user.text_input.text = root.file_manager.loaded_file_text
+                    root.popup.dismiss()
+
+
 <EditMemo>:
+    file_title: file_name_input
+    text_input: code_input
     canvas.before:
         Color:
             rgba: get_color_from_hex("#E8E8E8FF")
@@ -116,6 +195,7 @@
                     background_normal: "images/mini-open-memo_btn.png"
                     background_down: "images/mini-open-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
+                    on_release: root.load()
         AnchorLayout:
             anchor_x: "center"
             height: 135
