@@ -5,11 +5,7 @@ name = "pypi"
 
 [packages]
 cython = "*"
-six = "*"
-jedi = "*"
-"jinja2" = "*"
 kivy = "*"
-pillow = "*"
 pip = "==18.0"
 
 [dev-packages]

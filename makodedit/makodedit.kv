@@ -378,21 +378,23 @@
                     BoxLayout:
                         orientation: "vertical"
                         Label:
-                            canvas.before:
-                                Color:
-                                    rgba: get_color_from_hex("#2E2E2EFF")
-                                Rectangle:
-                                    pos: self.pos
-                                    size: self.size
                             font_name: "NotoSansCJKjp-Light"
                             text: "アプリ制作者: (C) 2018 Eleven-junichi2"
-                            color: get_color_from_hex("#D7DCC7FF")
+                            color: get_color_from_hex("#000000FF")
                         TextInput:
-                            background_color: get_color_from_hex("#D7DCC7FF")
-                            foreground_color: get_color_from_hex("#2E2E2EFF")
                             multiline: False
                             readonly: True
                             text: "https://eleven-junichi2.github.io/"
+                    Label:
+                        canvas.before:
+                            Color:
+                                rgba: get_color_from_hex("#2E2E2EFF")
+                            Rectangle:
+                                pos: self.pos
+                                size: self.size
+                        font_name: "NotoSansCJKjp-Light"
+                        text: "このアプリは以下を使用しています:"
+                        color: get_color_from_hex("#D7DCC7FF")
                     BoxLayout:
                         orientation: "vertical"
                         Label:
@@ -443,36 +445,6 @@
                             multiline: False
                             readonly: True
                             text: "http://glew.sourceforge.net/glew.txt"
-                    BoxLayout:
-                        orientation: "vertical"
-                        Label:
-                            font_name: "NotoSansCJKjp-Light"
-                            text: "jedi"
-                            color: get_color_from_hex("#000000FF")
-                        TextInput:
-                            multiline: False
-                            readonly: True
-                            text: "https://github.com/davidhalter/jedi/blob/master/LICENSE.txt"
-                    BoxLayout:
-                        orientation: "vertical"
-                        Label:
-                            font_name: "NotoSansCJKjp-Light"
-                            text: "jinja2"
-                            color: get_color_from_hex("#000000FF")
-                        TextInput:
-                            multiline: False
-                            readonly: True
-                            text: "https://github.com/pallets/jinja/blob/master/LICENSE"
-                    BoxLayout:
-                        orientation: "vertical"
-                        Label:
-                            font_name: "NotoSansCJKjp-Light"
-                            text: "pillow"
-                            color: get_color_from_hex("#000000FF")
-                        TextInput:
-                            multiline: False
-                            readonly: True
-                            text: "https://github.com/python-pillow/Pillow/blob/master/LICENSE"
 
 
 <ManageFileMenu>:
