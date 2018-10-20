@@ -1,4 +1,5 @@
 import pathlib
+import sys
 
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -6,9 +7,9 @@ from kivy.uix.popup import Popup
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.codeinput import CodeInput
 from kivy.uix.relativelayout import RelativeLayout
-# from kivy.uix.filechooser import FileChooserIconView
 from kivy.core.window import Window
 from kivy.core.text import LabelBase
+from kivy.resources import resource_add_path
 
 LabelBase.register("NotoSansCJKjp-Light",
                    fn_regular="./fonts/NotoSansCJKjp-Light.otf")
@@ -21,6 +22,8 @@ Window.size = (360, 640)
 
 
 DATA_DIR_NAME = "data"
+
+__file__ = sys.argv[0]
 
 
 def data_dir(data_dir_name) -> pathlib.Path:
@@ -65,6 +68,7 @@ class DialogSaved(Popup):
     def __init__(self, saved_file_name, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.size_hint = (0.9, 0.9)
+        self.title = " "
         self.content = DialogSavedLayout(saved_file_name, self)
 
 
@@ -72,8 +76,8 @@ class DialogLoad(Popup):
     def __init__(self, file_manage_user, file_manager, data_dir,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         self.size_hint = (0.9, 0.9)
+        self.title = " "
         self.content = DialogLoadLayout(
             file_manage_user, file_manager, data_dir, self)
 
@@ -143,7 +147,11 @@ class Tutorial(Screen):
     pass
 
 
-class ManageMemoMenu(Screen):
+class ManageFileMenu(Screen):
+    pass
+
+
+class License(Screen):
     pass
 
 
@@ -155,9 +163,10 @@ class MakodeditScreenManager(ScreenManager):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.add_widget(MainMenu(name="main"))
-        self.add_widget(ManageMemoMenu(name="manage_memo"))
+        self.add_widget(ManageFileMenu(name="manage_memo"))
         self.add_widget(Tutorial(name="tutorial"))
         self.add_widget(EditMemo(name="edit_memo"))
+        self.add_widget(License(name="license"))
 
 
 class MakodeditApp(App):
@@ -168,5 +177,6 @@ class MakodeditApp(App):
 
 
 if __name__ == "__main__":
-    print(LabelBase.get_system_fonts_dir())
+    if hasattr(sys, "_MEIPASS"):
+        resource_add_path(sys._MEIPASS)
     MakodeditApp().run()

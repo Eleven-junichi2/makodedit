@@ -21,7 +21,7 @@
         size: self.parent.size
         orientation: "vertical"
         Label:
-            text: "保存しました。"
+            text: "dataフォルダに\n保存しました。"
             font_size: 24
             font_name: "NotoSansCJKjp-Light"
         Label:
@@ -219,7 +219,42 @@
                     title: APP_NAME
                     app_icon: ""
                     on_press: root.manager.current = "main"
+                ActionGroup:
+                    font_name: "NotoSansCJKjp-Light"
+                    text: "目次"
+                    mode: 'spinner'
+                    ActionButton:
+                        text: "このアプリについて"
+                        font_name: "NotoSansCJKjp-Light"
+                        on_release: carousel.load_slide(carousel.slides[0])
+                        size_hint_x: None
+                        minimum_width: self.texture_size[0]
+                    ActionButton:
+                        text: "カスタマイズ"
+                        font_name: "NotoSansCJKjp-Light"
+                        on_release: carousel.load_slide(carousel.slides[1])
+                    ActionButton:
+                        text: "はじめるには"
+                        font_name: "NotoSansCJKjp-Light"
+                        on_release: carousel.load_slide(carousel.slides[2])
+                    ActionButton:
+                        text: "ファイルを書く"
+                        font_name: "NotoSansCJKjp-Light"
+                        on_release: carousel.load_slide(carousel.slides[3])
+                    ActionButton:
+                        text: "ファイルを開く"
+                        font_name: "NotoSansCJKjp-Light"
+                        on_release: carousel.load_slide(carousel.slides[4])
+                    ActionButton:
+                        text: "ファイルを保存する"
+                        font_name: "NotoSansCJKjp-Light"
+                        on_release: carousel.load_slide(carousel.slides[5])
+                    ActionButton:
+                        text: "ファイルの保存先"
+                        font_name: "NotoSansCJKjp-Light"
+                        on_release: carousel.load_slide(carousel.slides[6])
         Carousel:
+            id: carousel
             canvas.before:
                 Color:
                     rgba: get_color_from_hex("#E8E8E8FF")
@@ -231,7 +266,7 @@
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
-                    text: "Makodeditはシンプルなメモアプリです。"
+                    text: "Makodeditはシンプルなテキストエディタです。"
                 Image:
                     source: "images/phone_in_hand.png"
                 Label:
@@ -244,13 +279,7 @@
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
-                    text: "コードを見やすくしてくれる\nシンタックスハイライト機能があるので、"
-                Label:
-                    font_name: "NotoSansCJKjp-Light"
-                    color: get_color_from_hex("#000000")
-                    text: "Pythonのスクリプトエディタとしても使えます。"
-            BoxLayout:
-                orientation: "vertical"
+                    text: "このアプリはKivyを使用しているので、"
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
@@ -264,7 +293,7 @@
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
-                    text: "メモを書いたり開くには"
+                    text: "ファイルを書いたり開くには"
                 Image:
                     source: "images/manage-memo_btn.png"
                 Label:
@@ -276,7 +305,7 @@
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
-                    text: "新しく書くには"
+                    text: "ファイルを書くには"
                 Image:
                     source: "images/create-memo_btn.png"
                 Label:
@@ -288,7 +317,7 @@
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
-                    text: "今まで書いたメモを開くには"
+                    text: "ファイルを開くには"
                 Image:
                     source: "images/open-memo_btn.png"
                 Label:
@@ -300,16 +329,153 @@
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
-                    text: "書いたメモを保存するには"
+                    text: "書いたテキストを保存するには"
                 Image:
                     source: "images/save-memo_btn.png"
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
                     text: "をタップします。"
+            BoxLayout:
+                orientation: "vertical"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "保存したメモは"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "アプリケーションと同じフォルダに作られる"
+                Label:
+                    font_name: "NotoSansCJKjp-Light"
+                    color: get_color_from_hex("#000000")
+                    text: "dataフォルダにあります。"
 
 
-<ManageMemoMenu>:
+<License>:
+    BoxLayout:
+        size: self.parent.size
+        orientation: "vertical"
+        ActionBar:
+            height: 70
+            size_hint_y: None
+            ActionView:
+                use_separator: True
+                ActionPrevious:
+                    title: APP_NAME
+                    app_icon: ""
+                    on_press: root.manager.current = "main"
+        RelativeLayout:
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex("#E8E8E8FF")
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            BoxLayout:
+                BoxLayout:
+                    orientation: "vertical"
+                    BoxLayout:
+                        orientation: "vertical"
+                        Label:
+                            canvas.before:
+                                Color:
+                                    rgba: get_color_from_hex("#2E2E2EFF")
+                                Rectangle:
+                                    pos: self.pos
+                                    size: self.size
+                            font_name: "NotoSansCJKjp-Light"
+                            text: "アプリ制作者: (C) 2018 Eleven-junichi2"
+                            color: get_color_from_hex("#D7DCC7FF")
+                        TextInput:
+                            background_color: get_color_from_hex("#D7DCC7FF")
+                            foreground_color: get_color_from_hex("#2E2E2EFF")
+                            multiline: False
+                            readonly: True
+                            text: "https://eleven-junichi2.github.io/"
+                    BoxLayout:
+                        orientation: "vertical"
+                        Label:
+                            font_name: "NotoSansCJKjp-Light"
+                            text: "NUIフレームワーク: Kivy"
+                            color: get_color_from_hex("#000000FF")
+                        TextInput:
+                            multiline: False
+                            readonly: True
+                            text: "https://github.com/kivy/kivy/blob/master/LICENSE"
+                    BoxLayout:
+                        orientation: "vertical"
+                        Label:
+                            font_name: "NotoSansCJKjp-Light"
+                            text: "フォントファミリ: Noto"
+                            color: get_color_from_hex("#000000FF")
+                        TextInput:
+                            multiline: False
+                            readonly: True
+                            text: "https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
+                    BoxLayout:
+                        orientation: "vertical"
+                        Label:
+                            font_name: "NotoSansCJKjp-Light"
+                            text: "pygments"
+                            color: get_color_from_hex("#000000FF")
+                        TextInput:
+                            multiline: False
+                            readonly: True
+                            text: "https://bitbucket.org/birkenfeld/pygments-main/src/tip/LICENSE"
+                    BoxLayout:
+                        orientation: "vertical"
+                        Label:
+                            font_name: "NotoSansCJKjp-Light"
+                            text: "sdl"
+                            color: get_color_from_hex("#000000FF")
+                        TextInput:
+                            multiline: False
+                            readonly: True
+                            text: "https://www.libsdl.org/license.php"
+                    BoxLayout:
+                        orientation: "vertical"
+                        Label:
+                            font_name: "NotoSansCJKjp-Light"
+                            text: "glew"
+                            color: get_color_from_hex("#000000FF")
+                        TextInput:
+                            multiline: False
+                            readonly: True
+                            text: "http://glew.sourceforge.net/glew.txt"
+                    BoxLayout:
+                        orientation: "vertical"
+                        Label:
+                            font_name: "NotoSansCJKjp-Light"
+                            text: "jedi"
+                            color: get_color_from_hex("#000000FF")
+                        TextInput:
+                            multiline: False
+                            readonly: True
+                            text: "https://github.com/davidhalter/jedi/blob/master/LICENSE.txt"
+                    BoxLayout:
+                        orientation: "vertical"
+                        Label:
+                            font_name: "NotoSansCJKjp-Light"
+                            text: "jinja2"
+                            color: get_color_from_hex("#000000FF")
+                        TextInput:
+                            multiline: False
+                            readonly: True
+                            text: "https://github.com/pallets/jinja/blob/master/LICENSE"
+                    BoxLayout:
+                        orientation: "vertical"
+                        Label:
+                            font_name: "NotoSansCJKjp-Light"
+                            text: "pillow"
+                            color: get_color_from_hex("#000000FF")
+                        TextInput:
+                            multiline: False
+                            readonly: True
+                            text: "https://github.com/python-pillow/Pillow/blob/master/LICENSE"
+
+
+<ManageFileMenu>:
     canvas.before:
         Color:
             rgba: get_color_from_hex("#E8E8E8FF")
@@ -340,7 +506,7 @@
                     on_release: root.manager.current = "edit_memo"
             Widget:
                 width: 20
-                size_hint: None, None
+                size_hint_x: None
             AnchorLayout:
                 anchor_x: "left"
                 Button:
@@ -350,7 +516,10 @@
                     background_down: "images/open-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
-                    on_release: 
+                    on_release:
+                        edit_memo_screen = root.manager.get_screen("edit_memo")
+                        edit_memo_screen.load()
+                        root.manager.current = "edit_memo"
 
 
 <MainMenu>:
@@ -389,3 +558,11 @@
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
                     on_release: root.manager.current = 'manage_memo'
+        Button:
+            size: self.texture_size[0] * 1.5, self.texture_size[1] * 1.5
+            size_hint: None, None
+            pos_hint: {"center_x": 0.5}
+            text: "ライセンス・コピーライト"
+            font_name: "NotoSansCJKjp-Light"
+            font_size: 14
+            on_release: root.manager.current = 'license'
