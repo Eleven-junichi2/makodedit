@@ -1,15 +1,16 @@
 import pathlib
 import sys
 
+from kivy.core.window import Window
+from kivy.core.text import LabelBase
+from kivy.resources import resource_add_path
 from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.uix.codeinput import CodeInput
 from kivy.uix.relativelayout import RelativeLayout
-from kivy.core.window import Window
-from kivy.core.text import LabelBase
-from kivy.resources import resource_add_path
+
 
 LabelBase.register("NotoSansCJKjp-Light",
                    fn_regular="./fonts/NotoSansCJKjp-Light.otf")
@@ -37,6 +38,10 @@ def check_exist_data_dir(data_dir: "As Path object."):
     path = data_dir
     if not path.is_dir():
         path.mkdir()
+
+
+class DialogFileBrowserLayout(RelativeLayout):
+    popup = ObjectProperty(None)
 
 
 class DialogSavedLayout(RelativeLayout):

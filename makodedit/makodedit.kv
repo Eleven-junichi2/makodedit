@@ -104,7 +104,8 @@
                 font_name: "NotoSansCJKjp-Light"
                 on_release:
                     if not file_chooser.selection == []: \
-                    root.file_manager.loaded_file_text, file_name = root.file_manager.load_file(file_chooser.selection[0])
+                    root.file_manager.loaded_file_text, file_name = \
+                    root.file_manager.load_file(file_chooser.selection[0])
                     else: \
                     root.file_manager.loaded_file_text, file_name = \
                     root.file_manage_user.text_input.text, root.file_manage_user.file_title.text
