@@ -59,10 +59,10 @@ class FileManager(metaclass=ABCMeta):
     def save_file(self):
         pass
 
-    def save_dialog(self, saved_file_name):
-        popup = FileSaveDialog(saved_file_name)
+    def save_dialog(self):
+        popup = FileSaveDialog(self.file_manage_user, self)
         popup.open()
 
     def load_dialog(self):
-        popup = FileLoadDialog(self.file_manage_user, self, self.data_dir_path)
+        popup = FileLoadDialog(self.file_manage_user, self)
         popup.open()

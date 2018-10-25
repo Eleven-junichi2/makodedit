@@ -1,6 +1,6 @@
 #:kivy 1.9.4
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-#:set APP_NAME "Makodedit"
+#:import pathlib pathlib
 
 <TitleTopBar@Label>:
     canvas.before:
@@ -13,31 +13,10 @@
     size_hint: None, None
     font_name: "NotoSansCJKjp-Light"
     font_size: 36
-    text: APP_NAME
+    text: app.title
 
 
-<DialogSavedLayout>:
-    BoxLayout:
-        size: self.parent.size
-        orientation: "vertical"
-        Label:
-            text: "dataフォルダに\n保存しました。"
-            font_size: 24
-            font_name: "NotoSansCJKjp-Light"
-        Label:
-            text: "タイトル: {}".format(root.saved_file_name)
-            font_size: 24
-            font_name: "NotoSansCJKjp-Light"
-        Button:
-            size: 100, 100
-            size_hint: None, None
-            background_normal: "images/save-memo_btn.png"
-            background_down: "images/save-memo_btn_pressed.png"
-            font_name: "NotoSansCJKjp-Light"
-            on_release: root.popup.dismiss()
-
-
-<DialogLoadLayout>:
+<FileSaveDialogLayout>:
     BoxLayout:
         size: self.parent.size
         orientation: "vertical"
@@ -56,13 +35,14 @@
                 font_size: 12
                 font_name: "NotoSansCJKjp-Light"
             TextInput:
-                text: "{}".format(file_chooser.path)
+                text: str(file_chooser.path)
                 font_size: 12
                 multiline: False
+                readonly: True
                 font_name: "NotoSansCJKjp-Light"
-        FileChooserListView:
+        FileChooserIconView:
             id: file_chooser
-            path: str(root.data_dir)
+            path: str(pathlib.Path.home())
         BoxLayout:
             canvas.before:
                 Color:
@@ -75,13 +55,14 @@
             size_hint_y: None
             orientation: "vertical"
             Label:
-                text: "ファイルの名前:"
+                text: "選択したファイル:"
                 font_size: 12
                 font_name: "NotoSansCJKjp-Light"
             TextInput:
                 text: "{}".format(file_chooser.selection)
                 font_size: 12
                 multiline: False
+                readonly: True
                 font_name: "NotoSansCJKjp-Light"
         BoxLayout:
             height: 100
@@ -103,20 +84,87 @@
                 background_down: "images/save-memo_btn_pressed.png"
                 font_name: "NotoSansCJKjp-Light"
                 on_release:
-                    if not file_chooser.selection == []: \
-                    root.file_manager.loaded_file_text, file_name = \
-                    root.file_manager.load_file(file_chooser.selection[0])
+                    if file_chooser.selection == []: \
+                    root.file_manage_user.save_file(file_chooser.path)
                     else: \
-                    root.file_manager.loaded_file_text, file_name = \
-                    root.file_manage_user.text_input.text, root.file_manage_user.file_title.text
-
-                    root.file_manage_user.file_title.text = file_name
-                    root.file_manage_user.text_input.text = root.file_manager.loaded_file_text
+                    root.file_manage_user.save_file(file_chooser.selection[0])
                     root.popup.dismiss()
 
 
-<EditMemo>:
-    file_title: file_name_input
+<FileLoadDialogLayout>:
+    BoxLayout:
+        size: self.parent.size
+        orientation: "vertical"
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex("#464646FF")
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            height: 66
+            size_hint_y: None
+            orientation: "vertical"
+            Label:
+                text: "ファイルの場所:"
+                font_size: 12
+                font_name: "NotoSansCJKjp-Light"
+            TextInput:
+                text: str(file_chooser.path)
+                font_size: 12
+                multiline: False
+                readonly: True
+                font_name: "NotoSansCJKjp-Light"
+        FileChooserIconView:
+            id: file_chooser
+            path: str(pathlib.Path.home())
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: get_color_from_hex("#464646FF")
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            padding_bottom: 10
+            height: 66
+            size_hint_y: None
+            orientation: "vertical"
+            Label:
+                text: "ファイルの名前:"
+                font_size: 12
+                font_name: "NotoSansCJKjp-Light"
+            TextInput:
+                text: "{}".format(file_chooser.selection)
+                font_size: 12
+                multiline: False
+                readonly: True
+                font_name: "NotoSansCJKjp-Light"
+        BoxLayout:
+            height: 100
+            size_hint_y: None
+            Button:
+                size: 100, self.parent.height
+                size_hint: None, None
+                background_normal: "images/cancel_btn.png"
+                background_down: "images/cancel_btn_pressed.png"
+                font_name: "NotoSansCJKjp-Light"
+                on_release: root.popup.dismiss()
+            Widget:
+                width: 10
+                size_hint_x: None
+            Button:
+                size: 100, self.parent.height
+                size_hint: None, None
+                background_normal: "images/open-memo_btn.png"
+                background_down: "images/open-memo_btn_pressed.png"
+                font_name: "NotoSansCJKjp-Light"
+                on_release:
+                    root.file_manage_user.load_file(file_chooser.selection[0])
+                    root.popup.dismiss()
+
+
+<FileEdit>:
+    file_name_input: file_name_input
     text_input: code_input
     canvas.before:
         Color:
@@ -132,7 +180,7 @@
             size_hint_y: None
             ActionView:
                 ActionPrevious:
-                    title: APP_NAME
+                    title: app.title
                     app_icon: ""
                     on_press: root.manager.current = "main"
                 ActionGroup:
@@ -184,7 +232,7 @@
                     background_down: "images/mini-save-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
-                    on_release: root.save(file_name_input.text, code_input.text)
+                    on_release: root.show_save_dialog()
                 Widget:
                     width: 20
                     size_hint: None, None
@@ -196,7 +244,7 @@
                     background_normal: "images/mini-open-memo_btn.png"
                     background_down: "images/mini-open-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
-                    on_release: root.load()
+                    on_release: root.show_load_dialog()
         AnchorLayout:
             anchor_x: "center"
             height: 135
@@ -217,7 +265,7 @@
             ActionView:
                 use_separator: True
                 ActionPrevious:
-                    title: APP_NAME
+                    title: app.title
                     app_icon: ""
                     on_press: root.manager.current = "main"
                 ActionGroup:
@@ -234,26 +282,38 @@
                         text: "カスタマイズ"
                         font_name: "NotoSansCJKjp-Light"
                         on_release: carousel.load_slide(carousel.slides[1])
+                        size_hint_x: None
+                        minimum_width: self.texture_size[0]                        
                     ActionButton:
                         text: "はじめるには"
                         font_name: "NotoSansCJKjp-Light"
                         on_release: carousel.load_slide(carousel.slides[2])
+                        size_hint_x: None
+                        minimum_width: self.texture_size[0]
                     ActionButton:
                         text: "ファイルを書く"
                         font_name: "NotoSansCJKjp-Light"
                         on_release: carousel.load_slide(carousel.slides[3])
+                        size_hint_x: None
+                        minimum_width: self.texture_size[0]
                     ActionButton:
                         text: "ファイルを開く"
                         font_name: "NotoSansCJKjp-Light"
                         on_release: carousel.load_slide(carousel.slides[4])
+                        size_hint_x: None
+                        minimum_width: self.texture_size[0]
                     ActionButton:
                         text: "ファイルを保存する"
                         font_name: "NotoSansCJKjp-Light"
                         on_release: carousel.load_slide(carousel.slides[5])
+                        size_hint_x: None
+                        minimum_width: self.texture_size[0]
                     ActionButton:
-                        text: "ファイルの保存先"
+                        text: "ファイルのエンコード"
                         font_name: "NotoSansCJKjp-Light"
                         on_release: carousel.load_slide(carousel.slides[6])
+                        size_hint_x: None
+                        minimum_width: self.texture_size[0]
         Carousel:
             id: carousel
             canvas.before:
@@ -342,15 +402,15 @@
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
-                    text: "保存したメモは"
+                    text: "ファイルのエンコードは"
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
-                    text: "アプリケーションと同じフォルダに作られる"
+                    text: "UTF-8"
                 Label:
                     font_name: "NotoSansCJKjp-Light"
                     color: get_color_from_hex("#000000")
-                    text: "dataフォルダにあります。"
+                    text: "です。"
 
 
 <License>:
@@ -363,7 +423,7 @@
             ActionView:
                 use_separator: True
                 ActionPrevious:
-                    title: APP_NAME
+                    title: app.title
                     app_icon: ""
                     on_press: root.manager.current = "main"
         RelativeLayout:
@@ -374,78 +434,87 @@
                     pos: self.pos
                     size: self.size
             BoxLayout:
+                orientation: "vertical"
                 BoxLayout:
                     orientation: "vertical"
-                    BoxLayout:
-                        orientation: "vertical"
-                        Label:
-                            font_name: "NotoSansCJKjp-Light"
-                            text: "アプリ制作者: (C) 2018 Eleven-junichi2"
-                            color: get_color_from_hex("#000000FF")
-                        TextInput:
-                            multiline: False
-                            readonly: True
-                            text: "https://eleven-junichi2.github.io/"
                     Label:
-                        canvas.before:
-                            Color:
-                                rgba: get_color_from_hex("#2E2E2EFF")
-                            Rectangle:
-                                pos: self.pos
-                                size: self.size
                         font_name: "NotoSansCJKjp-Light"
-                        text: "このアプリは以下を使用しています:"
-                        color: get_color_from_hex("#D7DCC7FF")
-                    BoxLayout:
-                        orientation: "vertical"
-                        Label:
-                            font_name: "NotoSansCJKjp-Light"
-                            text: "NUIフレームワーク: Kivy"
-                            color: get_color_from_hex("#000000FF")
-                        TextInput:
-                            multiline: False
-                            readonly: True
-                            text: "https://github.com/kivy/kivy/blob/master/LICENSE"
-                    BoxLayout:
-                        orientation: "vertical"
-                        Label:
-                            font_name: "NotoSansCJKjp-Light"
-                            text: "フォントファミリ: Noto"
-                            color: get_color_from_hex("#000000FF")
-                        TextInput:
-                            multiline: False
-                            readonly: True
-                            text: "https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
-                    BoxLayout:
-                        orientation: "vertical"
-                        Label:
-                            font_name: "NotoSansCJKjp-Light"
-                            text: "pygments"
-                            color: get_color_from_hex("#000000FF")
-                        TextInput:
-                            multiline: False
-                            readonly: True
-                            text: "https://bitbucket.org/birkenfeld/pygments-main/src/tip/LICENSE"
-                    BoxLayout:
-                        orientation: "vertical"
-                        Label:
-                            font_name: "NotoSansCJKjp-Light"
-                            text: "sdl"
-                            color: get_color_from_hex("#000000FF")
-                        TextInput:
-                            multiline: False
-                            readonly: True
-                            text: "https://www.libsdl.org/license.php"
-                    BoxLayout:
-                        orientation: "vertical"
-                        Label:
-                            font_name: "NotoSansCJKjp-Light"
-                            text: "glew"
-                            color: get_color_from_hex("#000000FF")
-                        TextInput:
-                            multiline: False
-                            readonly: True
-                            text: "http://glew.sourceforge.net/glew.txt"
+                        text: "アプリ制作者: (C) 2018 Eleven-junichi2"
+                        color: get_color_from_hex("#000000FF")
+                    TextInput:
+                        multiline: False
+                        readonly: True
+                        text: "https://eleven-junichi2.github.io/"
+                BoxLayout:
+                    orientation: "vertical"
+                    Label:
+                        font_name: "NotoSansCJKjp-Light"
+                        text: "GitHubリポジトリ"
+                        color: get_color_from_hex("#000000FF")
+                    TextInput:
+                        multiline: False
+                        readonly: True
+                        text: "https://github.com/Eleven-junichi2/makodedit"
+                Label:
+                    canvas.before:
+                        Color:
+                            rgba: get_color_from_hex("#2E2E2EFF")
+                        Rectangle:
+                            pos: self.pos
+                            size: self.size
+                    font_name: "NotoSansCJKjp-Light"
+                    text: "このアプリは以下を使用しています:"
+                    color: get_color_from_hex("#D7DCC7FF")
+                BoxLayout:
+                    orientation: "vertical"
+                    Label:
+                        font_name: "NotoSansCJKjp-Light"
+                        text: "NUIフレームワーク: Kivy"
+                        color: get_color_from_hex("#000000FF")
+                    TextInput:
+                        multiline: False
+                        readonly: True
+                        text: "https://github.com/kivy/kivy/blob/master/LICENSE"
+                BoxLayout:
+                    orientation: "vertical"
+                    Label:
+                        font_name: "NotoSansCJKjp-Light"
+                        text: "フォントファミリ: Noto"
+                        color: get_color_from_hex("#000000FF")
+                    TextInput:
+                        multiline: False
+                        readonly: True
+                        text: "https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL"
+                BoxLayout:
+                    orientation: "vertical"
+                    Label:
+                        font_name: "NotoSansCJKjp-Light"
+                        text: "pygments"
+                        color: get_color_from_hex("#000000FF")
+                    TextInput:
+                        multiline: False
+                        readonly: True
+                        text: "https://bitbucket.org/birkenfeld/pygments-main/src/tip/LICENSE"
+                BoxLayout:
+                    orientation: "vertical"
+                    Label:
+                        font_name: "NotoSansCJKjp-Light"
+                        text: "sdl"
+                        color: get_color_from_hex("#000000FF")
+                    TextInput:
+                        multiline: False
+                        readonly: True
+                        text: "https://www.libsdl.org/license.php"
+                BoxLayout:
+                    orientation: "vertical"
+                    Label:
+                        font_name: "NotoSansCJKjp-Light"
+                        text: "glew"
+                        color: get_color_from_hex("#000000FF")
+                    TextInput:
+                        multiline: False
+                        readonly: True
+                        text: "http://glew.sourceforge.net/glew.txt"
 
 
 <ManageFileMenu>:
@@ -462,7 +531,7 @@
             ActionView:
                 use_separator: True
                 ActionPrevious:
-                    title: APP_NAME
+                    title: app.title
                     app_icon: ""
                     on_press: root.manager.current = "main"
         BoxLayout:
@@ -476,7 +545,7 @@
                     background_down: "images/create-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
-                    on_release: root.manager.current = "edit_memo"
+                    on_release: root.manager.current = "file_edit"
             Widget:
                 width: 20
                 size_hint_x: None
@@ -490,9 +559,9 @@
                     font_name: "NotoSansCJKjp-Light"
                     font_size: 14
                     on_release:
-                        edit_memo_screen = root.manager.get_screen("edit_memo")
-                        edit_memo_screen.load()
-                        root.manager.current = "edit_memo"
+                        file_edit_screen = root.manager.get_screen("file_edit")
+                        file_edit_screen.show_load_dialog()
+                        root.manager.current = "file_edit"
 
 
 <MainMenu>:
