@@ -1,4 +1,4 @@
-from abc import ABCMeta, abstractmethod
+sfrom abc import ABCMeta, abstractmethod
 
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import ObjectProperty
@@ -54,7 +54,7 @@ class FileLoadDialog(FileBrowserDialog):
 
 class FileManager(metaclass=ABCMeta):
     """
-    Example:
+    Example usage:
 
     class ExampleFileManager(FileManager):
         def load_file(self):
