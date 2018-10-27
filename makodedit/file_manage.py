@@ -1,4 +1,4 @@
-sfrom abc import ABCMeta, abstractmethod
+from abc import ABCMeta, abstractmethod
 
 from kivy.uix.relativelayout import RelativeLayout
 from kivy.properties import ObjectProperty
