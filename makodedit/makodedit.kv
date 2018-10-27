@@ -7,12 +7,12 @@
         Color:
             rgba: get_color_from_hex("#2E2E2EFF")
         Rectangle:
-            pos: self.pos
-            size: self.size
-    size: self.parent.width, 70
+            pos: dp(self.x), dp(self.y)
+            size: dp(self.width), dp(self.height)
+    size: dp(self.parent.width), dp(70)
     size_hint: None, None
     font_name: "NotoSansCJKjp-Light"
-    font_size: 36
+    font_size: sp(36)
     text: app.title
 
 
@@ -25,21 +25,28 @@
                 Color:
                     rgba: get_color_from_hex("#464646FF")
                 Rectangle:
-                    pos: self.pos
-                    size: self.size
-            height: 66
+                    pos: dp(self.x), dp(self.y)
+                    size: dp(self.width), dp(self.height)
+            height: dp(66)
             size_hint_y: None
             orientation: "vertical"
             Label:
                 text: "ファイルの場所:"
-                font_size: 12
+                font_size: sp(12)
                 font_name: "NotoSansCJKjp-Light"
-            TextInput:
-                text: str(file_chooser.path)
-                font_size: 12
-                multiline: False
-                readonly: True
-                font_name: "NotoSansCJKjp-Light"
+            BoxLayout:
+                orientation: "horizontal"
+                TextInput:
+                    id: dir_path_input
+                    text: str(file_chooser.path)
+                    font_size: 12
+                    multiline: False
+                    font_name: "NotoSansCJKjp-Light"
+                Button:
+                    size_hint_x: 0.2
+                    font_name: "NotoSansCJKjp-Light"
+                    text: "移動"
+                    on_release: root.file_manager.change_directory(file_chooser, dir_path_input.text)
         FileChooserIconView:
             id: file_chooser
             path: str(pathlib.Path.home())
@@ -87,7 +94,14 @@
                     if file_chooser.selection == []: \
                     root.file_manage_user.save_file(file_chooser.path)
                     else: \
-                    root.file_manage_user.save_file(file_chooser.selection[0])
+                    root.file_manage_unormal: "images/save-memo_btn.png"
+                background_down: "images/save-memo_btn_pressed.png"
+                font_name: "NotoSansCJKjp-Light"
+                on_release:
+                    if file_chooser.selection == []: \
+                    root.file_manage_user.save_file(file_chooser.path)
+                    else: \
+                    root.file_maser.save_file(file_chooser.selection[0])
                     root.popup.dismiss()
 
 
@@ -100,21 +114,28 @@
                 Color:
                     rgba: get_color_from_hex("#464646FF")
                 Rectangle:
-                    pos: self.pos
-                    size: self.size
-            height: 66
+                    pos: dp(self.x), dp(self.y)
+                    size: dp(self.width), dp(self.height)
+            height: dp(66)
             size_hint_y: None
             orientation: "vertical"
             Label:
                 text: "ファイルの場所:"
-                font_size: 12
+                font_size: sp(12)
                 font_name: "NotoSansCJKjp-Light"
-            TextInput:
-                text: str(file_chooser.path)
-                font_size: 12
-                multiline: False
-                readonly: True
-                font_name: "NotoSansCJKjp-Light"
+            BoxLayout:
+                orientation: "horizontal"
+                TextInput:
+                    id: dir_path_input
+                    text: str(file_chooser.path)
+                    font_size: 12
+                    multiline: False
+                    font_name: "NotoSansCJKjp-Light"
+                Button:
+                    size_hint_x: 0.2
+                    font_name: "NotoSansCJKjp-Light"
+                    text: "移動"
+                    on_release: root.file_manager.change_directory(file_chooser, dir_path_input.text)
         FileChooserIconView:
             id: file_chooser
             path: str(pathlib.Path.home())
@@ -134,7 +155,7 @@
                 font_size: 12
                 font_name: "NotoSansCJKjp-Light"
             TextInput:
-                text: "{}".format(file_chooser.selection)
+                text: str(file_chooser.selection)
                 font_size: 12
                 multiline: False
                 readonly: True
@@ -207,8 +228,8 @@
                 TextInput:
                     id: file_name_input
                     hint_text: "Title: as the file name."
-                    height: 30
-                    font_size: 10
+                    height: dp(30)
+                    font_size: sp(10)
                     size_hint_y: None
                     font_name: "NotoSansCJKjp-Light"
                     multiline: False
@@ -226,20 +247,20 @@
             AnchorLayout:
                 anchor_x: "right"
                 Button:
-                    size: 50, self.parent.height
+                    size: dp(50), dp(self.parent.height)
                     size_hint: None, None
                     background_normal: "images/mini-save-memo_btn.png"
                     background_down: "images/mini-save-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
-                    font_size: 14
+                    font_size: "14sp"
                     on_release: root.show_save_dialog()
                 Widget:
-                    width: 20
+                    width: dp(20)
                     size_hint: None, None
             AnchorLayout:
                 anchor_x: "left"
                 Button:
-                    size: 50, self.parent.height
+                    size: dp(50), self.parent.height
                     size_hint: None, None
                     background_normal: "images/mini-open-memo_btn.png"
                     background_down: "images/mini-open-memo_btn_pressed.png"
@@ -332,7 +353,7 @@
                     source: "images/phone_in_hand.png"
                 Label:
                     font_name: "NotoSansCJKjp-Light"
-                    font_size: 12
+                    font_size: "12sp"
                     color: get_color_from_hex("#009688")
                     text: "続けて見るには左右どちらかにスライドしてください"
             BoxLayout:
@@ -539,12 +560,11 @@
             AnchorLayout:
                 anchor_x: "right"
                 Button:
-                    size: 100, 100
+                    size: dp(100), dp(100)
                     size_hint: None, None
                     background_normal: "images/create-memo_btn.png"
                     background_down: "images/create-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
-                    font_size: 14
                     on_release: root.manager.current = "file_edit"
             Widget:
                 width: 20
@@ -552,12 +572,11 @@
             AnchorLayout:
                 anchor_x: "left"
                 Button:
-                    size: 100, 100
+                    size: dp(100), dp(100)
                     size_hint: None, None
                     background_normal: "images/open-memo_btn.png"
                     background_down: "images/open-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
-                    font_size: 14
                     on_release:
                         file_edit_screen = root.manager.get_screen("file_edit")
                         file_edit_screen.show_load_dialog()
@@ -580,12 +599,11 @@
             AnchorLayout:
                 anchor_x: "right"
                 Button:
-                    size: 100, 100
+                    size: dp(100), dp(100)
                     size_hint: None, None
                     background_normal: "images/help_btn.png"
                     background_down: "images/help_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
-                    font_size: 14
                     on_release: root.manager.current = 'tutorial'
             Widget:
                 width: 20
@@ -593,12 +611,11 @@
             AnchorLayout:
                 anchor_x: "left"
                 Button:
-                    size: 100, 100
+                    size: dp(100), dp(100)
                     size_hint: None, None
                     background_normal: "images/manage-memo_btn.png"
                     background_down: "images/manage-memo_btn_pressed.png"
                     font_name: "NotoSansCJKjp-Light"
-                    font_size: 14
                     on_release: root.manager.current = 'manage_memo'
         Button:
             size: self.texture_size[0] * 1.5, self.texture_size[1] * 1.5
@@ -606,5 +623,5 @@
             pos_hint: {"center_x": 0.5}
             text: "ライセンス・コピーライト"
             font_name: "NotoSansCJKjp-Light"
-            font_size: 14
+            font_size: "14sp"
             on_release: root.manager.current = 'license'

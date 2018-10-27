@@ -38,16 +38,9 @@ class MakodeditFileManager(FileManager):
             saved_file_name = file_path.parts[-1]
             return saved_file_name
 
-    # def save_file(self, file_name, file_path, text):
-    #     file_name = str(file_name)
-    #     text = str(text)
-    #     if not(file_name == "" or text == ""):
-    #         # self.data_dir_path: pathlib.Path object
-    #         with open(str(self.data_dir_path / file_name), "w") as file_obj:
-    #             file_obj.write(text)
-    #         return True
-    #     else:
-    #         return False
+    def change_directory(self, file_chooser, to_dir_path):
+        if pathlib.Path(to_dir_path).exists():
+            file_chooser.path = to_dir_path
 
 
 class MakodeditCodeInput(CodeInput):

@@ -47,6 +47,21 @@ class FileLoadDialog(Popup):
 
 
 class FileManager(metaclass=ABCMeta):
+    """
+    Example:
+
+    class ExampleFileManager(FileManager):
+        def load_file(self):
+            pass
+
+        def save_file(self):
+            pass
+
+    class ExampleFileManageUser(Widget):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.file_manager = ExampleFileManager(self)
+    """
     def __init__(self, file_manage_user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.file_manage_user = file_manage_user
