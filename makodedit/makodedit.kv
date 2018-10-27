@@ -90,18 +90,14 @@
                 background_normal: "images/save-memo_btn.png"
                 background_down: "images/save-memo_btn_pressed.png"
                 font_name: "NotoSansCJKjp-Light"
-                on_release:
-                    if file_chooser.selection == []: \
-                    root.file_manage_user.save_file(file_chooser.path)
-                    else: \
-                    root.file_manage_unormal: "images/save-memo_btn.png"
+                background_normal: "images/save-memo_btn.png"
                 background_down: "images/save-memo_btn_pressed.png"
                 font_name: "NotoSansCJKjp-Light"
                 on_release:
                     if file_chooser.selection == []: \
                     root.file_manage_user.save_file(file_chooser.path)
                     else: \
-                    root.file_maser.save_file(file_chooser.selection[0])
+                    root.file_manage_user.save_file(file_chooser.selection[0])
                     root.popup.dismiss()
 
 

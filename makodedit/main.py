@@ -20,8 +20,6 @@ LabelBase.register("NotoSansMonoCJKjp-Regular",
 
 Window.size = (360, 640)
 
-__file__ = sys.argv[0]
-
 
 class MakodeditFileManager(FileManager):
     def load_file(self, file_path):

@@ -26,24 +26,30 @@ class FileLoadDialogLayout(FileBrowserDialogLayout):
     pass
 
 
-class FileSaveDialog(Popup):
+class FileBrowserDialog(Popup):
+    def __init__(self, file_manage_user, file_manager,
+                 dialog_layout,
+                 *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.size_hint = (0.9, 0.9)
+        self.title = " "
+        self.content = dialog_layout(file_manage_user, file_manager, self)
+
+
+class FileSaveDialog(FileBrowserDialog):
     def __init__(self, file_manage_user, file_manager,
                  dialog_layout=FileSaveDialogLayout,
                  *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.size_hint = (0.9, 0.9)
-        self.title = " "
-        self.content = dialog_layout(file_manage_user, file_manager, self)
+        super().__init__(file_manage_user, file_manager, dialog_layout,
+                         *args, **kwargs)
 
 
-class FileLoadDialog(Popup):
+class FileLoadDialog(FileBrowserDialog):
     def __init__(self, file_manage_user, file_manager,
                  dialog_layout=FileLoadDialogLayout,
                  *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.size_hint = (0.9, 0.9)
-        self.title = " "
-        self.content = dialog_layout(file_manage_user, file_manager, self)
+        super().__init__(file_manage_user, file_manager, dialog_layout,
+                         *args, **kwargs)
 
 
 class FileManager(metaclass=ABCMeta):
@@ -62,6 +68,7 @@ class FileManager(metaclass=ABCMeta):
             super().__init__(*args, **kwargs)
             self.file_manager = ExampleFileManager(self)
     """
+
     def __init__(self, file_manage_user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.file_manage_user = file_manage_user
