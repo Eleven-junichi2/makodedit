@@ -4,6 +4,7 @@
 
 A text editor.
 It has The Simple UI & Syntax Highlight(Python).
+This Application was created by Kivy framework.
 
 # How to install (download releases)
 You can download executable file of this application.
