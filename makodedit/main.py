@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import sys
 import pathlib
 
@@ -11,6 +13,7 @@ from kivy.properties import ObjectProperty
 
 from file_manage import FileManager
 
+
 LabelBase.register("NotoSansCJKjp-Light",
                    fn_regular="./fonts/NotoSansCJKjp-Light.otf")
 
@@ -23,7 +26,7 @@ Window.size = (360, 640)
 
 class MakodeditFileManager(FileManager):
     def load_file(self, file_path):
-        with open(file_path, "r") as file_obj:
+        with open(file_path, "r", encoding="utf-8") as file_obj:
             return file_obj.read()
 
     def save_file(self, file_path, file_name, text):
@@ -44,7 +47,7 @@ class MakodeditFileManager(FileManager):
 class MakodeditCodeInput(CodeInput):
     def change_style(self, style_name="default"):
         self.style_name = style_name
-        # -- Reset self.text for apply style.
+        # -- Reset self.text for apply gui style.
         tmp = self.text
         self.text = ""
         self.text = tmp
